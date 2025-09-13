@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SignInPage() {
@@ -10,15 +10,21 @@ export default function SignInPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const urlRole = searchParams.get("role");
+
+  useEffect(() => {
+    // Set role from URL parameter if provided
+    if (urlRole === "seller" || urlRole === "buyer") {
+      setRole(urlRole);
+    }
+  }, [urlRole]);
 
   const handleSignIn = async () => {
     setIsLoading(true);
     try {
-      // Store the selected role in localStorage before signing in
-      localStorage.setItem("selectedRole", role);
-
+      // Pass the role as a parameter to the role selection page
       await signIn("google", {
-        callbackUrl: "/auth/role-selection",
+        callbackUrl: `/auth/role-selection?role=${role}`,
       });
     } catch (error) {
       console.error("Sign in error:", error);

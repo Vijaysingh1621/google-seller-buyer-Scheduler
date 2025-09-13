@@ -2,7 +2,15 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { Calendar, Clock, User, LogOut, Search, ArrowRight, Plus } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  User,
+  LogOut,
+  Search,
+  ArrowRight,
+  Plus,
+} from "lucide-react";
 import Link from "next/link";
 
 interface Seller {
@@ -27,7 +35,9 @@ interface Appointment {
 export default function BuyerDashboard() {
   const { data: session, status } = useSession();
   const [sellers, setSellers] = useState<Seller[]>([]);
-  const [recentAppointments, setRecentAppointments] = useState<Appointment[]>([]);
+  const [recentAppointments, setRecentAppointments] = useState<Appointment[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -64,9 +74,10 @@ export default function BuyerDashboard() {
     }
   };
 
-  const filteredSellers = sellers.filter(seller =>
-    seller.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    seller.email.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredSellers = sellers.filter(
+    (seller) =>
+      seller.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      seller.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (status === "loading") {
@@ -82,8 +93,13 @@ export default function BuyerDashboard() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
-          <p className="text-gray-600 mb-4">Please sign in to access the buyer dashboard.</p>
-          <Link href="/auth/signin" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <p className="text-gray-600 mb-4">
+            Please sign in to access the buyer dashboard.
+          </p>
+          <Link
+            href="/auth/signin"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
             Sign In
           </Link>
         </div>
@@ -115,10 +131,14 @@ export default function BuyerDashboard() {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
               <Calendar className="h-8 w-8 text-blue-600 mr-3" />
-              <h1 className="text-2xl font-bold text-gray-900">Buyer Dashboard</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Buyer Dashboard
+              </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Welcome, {session.user.name}</span>
+              <span className="text-gray-600">
+                Welcome, {session.user.name}
+              </span>
               <Link
                 href="/buyer/appointments"
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center"
@@ -145,8 +165,12 @@ export default function BuyerDashboard() {
             <div className="flex items-center">
               <Calendar className="h-8 w-8 text-blue-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Appointments</p>
-                <p className="text-2xl font-bold text-gray-900">{recentAppointments.length}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Total Appointments
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {recentAppointments.length}
+                </p>
               </div>
             </div>
           </div>
@@ -154,8 +178,12 @@ export default function BuyerDashboard() {
             <div className="flex items-center">
               <User className="h-8 w-8 text-green-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Available Sellers</p>
-                <p className="text-2xl font-bold text-gray-900">{sellers.length}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Available Sellers
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {sellers.length}
+                </p>
               </div>
             </div>
           </div>
@@ -165,7 +193,11 @@ export default function BuyerDashboard() {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Upcoming</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {recentAppointments.filter(apt => apt.status === 'scheduled').length}
+                  {
+                    recentAppointments.filter(
+                      (apt) => apt.status === "scheduled"
+                    ).length
+                  }
                 </p>
               </div>
             </div>
@@ -177,7 +209,9 @@ export default function BuyerDashboard() {
           <div className="bg-white rounded-lg shadow">
             <div className="p-6 border-b">
               <div className="flex justify-between items-center">
-                <h2 className="text-lg font-semibold text-gray-900">Recent Appointments</h2>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  Recent Appointments
+                </h2>
                 <Link
                   href="/buyer/appointments"
                   className="text-blue-600 hover:text-blue-700 text-sm font-medium"
@@ -196,22 +230,32 @@ export default function BuyerDashboard() {
               ) : recentAppointments.length > 0 ? (
                 <div className="space-y-4">
                   {recentAppointments.map((appointment) => (
-                    <div key={appointment._id} className="flex items-center justify-between p-4 border rounded-lg">
+                    <div
+                      key={appointment._id}
+                      className="flex items-center justify-between p-4 border rounded-lg"
+                    >
                       <div>
-                        <p className="font-medium text-gray-900">{appointment.title}</p>
-                        <p className="text-sm text-gray-600">with {appointment.seller.name}</p>
+                        <p className="font-medium text-gray-900">
+                          {appointment.title}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          with {appointment.seller.name}
+                        </p>
                         <p className="text-sm text-gray-500">
-                          {new Date(appointment.startTime).toLocaleDateString()} at{" "}
+                          {new Date(appointment.startTime).toLocaleDateString()}{" "}
+                          at{" "}
                           {new Date(appointment.startTime).toLocaleTimeString()}
                         </p>
                       </div>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        appointment.status === 'scheduled' 
-                          ? 'bg-green-100 text-green-800'
-                          : appointment.status === 'cancelled'
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          appointment.status === "scheduled"
+                            ? "bg-green-100 text-green-800"
+                            : appointment.status === "cancelled"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
                         {appointment.status}
                       </span>
                     </div>
@@ -221,7 +265,9 @@ export default function BuyerDashboard() {
                 <div className="text-center py-8">
                   <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                   <p className="text-gray-600">No appointments yet.</p>
-                  <p className="text-sm text-gray-500">Book your first appointment with a seller below.</p>
+                  <p className="text-sm text-gray-500">
+                    Book your first appointment with a seller below.
+                  </p>
                 </div>
               )}
             </div>
@@ -230,7 +276,9 @@ export default function BuyerDashboard() {
           {/* Available Sellers */}
           <div className="bg-white rounded-lg shadow">
             <div className="p-6 border-b">
-              <h2 className="text-lg font-semibold text-gray-900">Book an Appointment</h2>
+              <h2 className="text-lg font-semibold text-gray-900">
+                Book an Appointment
+              </h2>
               <div className="mt-4">
                 <div className="relative">
                   <Search className="h-5 w-5 text-gray-400 absolute left-3 top-3" />
@@ -254,7 +302,10 @@ export default function BuyerDashboard() {
               ) : filteredSellers.length > 0 ? (
                 <div className="space-y-4 max-h-96 overflow-y-auto">
                   {filteredSellers.map((seller) => (
-                    <div key={seller._id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                    <div
+                      key={seller._id}
+                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
+                    >
                       <div className="flex items-center">
                         {seller.image ? (
                           <img
@@ -268,8 +319,12 @@ export default function BuyerDashboard() {
                           </div>
                         )}
                         <div className="ml-3">
-                          <p className="font-medium text-gray-900">{seller.name}</p>
-                          <p className="text-sm text-gray-600">{seller.email}</p>
+                          <p className="font-medium text-gray-900">
+                            {seller.name}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {seller.email}
+                          </p>
                         </div>
                       </div>
                       <Link
@@ -287,7 +342,9 @@ export default function BuyerDashboard() {
                   <User className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                   <p className="text-gray-600">No sellers found.</p>
                   {searchTerm && (
-                    <p className="text-sm text-gray-500">Try adjusting your search terms.</p>
+                    <p className="text-sm text-gray-500">
+                      Try adjusting your search terms.
+                    </p>
                   )}
                 </div>
               )}

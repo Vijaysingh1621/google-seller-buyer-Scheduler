@@ -39,9 +39,9 @@ export default function AvailabilityPage() {
       const response = await fetch("/api/availability");
       if (response.ok) {
         const data = await response.json();
-        
+
         // Initialize with default availability if none exists
-        const defaultAvailability = DAYS.map(day => ({
+        const defaultAvailability = DAYS.map((day) => ({
           dayOfWeek: day.value,
           startTime: "09:00",
           endTime: "17:00",
@@ -49,8 +49,10 @@ export default function AvailabilityPage() {
         }));
 
         // Merge with existing data
-        const mergedAvailability = defaultAvailability.map(defaultSlot => {
-          const existingSlot = data.find((slot: AvailabilitySlot) => slot.dayOfWeek === defaultSlot.dayOfWeek);
+        const mergedAvailability = defaultAvailability.map((defaultSlot) => {
+          const existingSlot = data.find(
+            (slot: AvailabilitySlot) => slot.dayOfWeek === defaultSlot.dayOfWeek
+          );
           return existingSlot || defaultSlot;
         });
 
@@ -63,12 +65,16 @@ export default function AvailabilityPage() {
     }
   };
 
-  const updateAvailability = (dayOfWeek: number, field: keyof AvailabilitySlot, value: any) => {
-    setAvailability(prev => prev.map(slot => 
-      slot.dayOfWeek === dayOfWeek 
-        ? { ...slot, [field]: value }
-        : slot
-    ));
+  const updateAvailability = (
+    dayOfWeek: number,
+    field: keyof AvailabilitySlot,
+    value: any
+  ) => {
+    setAvailability((prev) =>
+      prev.map((slot) =>
+        slot.dayOfWeek === dayOfWeek ? { ...slot, [field]: value } : slot
+      )
+    );
   };
 
   const saveAvailability = async () => {
@@ -124,7 +130,7 @@ export default function AvailabilityPage() {
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center py-4">
-            <Link 
+            <Link
               href="/seller/dashboard"
               className="flex items-center text-gray-600 hover:text-gray-900 mr-4"
             >
@@ -132,7 +138,9 @@ export default function AvailabilityPage() {
               Back to Dashboard
             </Link>
             <Calendar className="h-8 w-8 text-blue-600 mr-3" />
-            <h1 className="text-2xl font-bold text-gray-900">Set Availability</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Set Availability
+            </h1>
           </div>
         </div>
       </header>
@@ -140,16 +148,20 @@ export default function AvailabilityPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white rounded-lg shadow">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">Weekly Availability</h2>
+            <h2 className="text-lg font-semibold text-gray-900">
+              Weekly Availability
+            </h2>
             <p className="text-sm text-gray-600 mt-1">
               Set your available hours for each day of the week
             </p>
           </div>
-          
+
           <div className="p-6">
             <div className="space-y-6">
               {DAYS.map((day) => {
-                const slot = availability.find(a => a.dayOfWeek === day.value);
+                const slot = availability.find(
+                  (a) => a.dayOfWeek === day.value
+                );
                 return (
                   <div key={day.value} className="flex items-center space-x-4">
                     <div className="w-24">
@@ -157,18 +169,32 @@ export default function AvailabilityPage() {
                         <input
                           type="checkbox"
                           checked={slot?.isActive || false}
-                          onChange={(e) => updateAvailability(day.value, 'isActive', e.target.checked)}
+                          onChange={(e) =>
+                            updateAvailability(
+                              day.value,
+                              "isActive",
+                              e.target.checked
+                            )
+                          }
                           className="mr-2"
                         />
-                        <span className="font-medium text-gray-700">{day.label}</span>
+                        <span className="font-medium text-gray-700">
+                          {day.label}
+                        </span>
                       </label>
                     </div>
-                    
+
                     <div className="flex items-center space-x-2">
                       <input
                         type="time"
                         value={slot?.startTime || "09:00"}
-                        onChange={(e) => updateAvailability(day.value, 'startTime', e.target.value)}
+                        onChange={(e) =>
+                          updateAvailability(
+                            day.value,
+                            "startTime",
+                            e.target.value
+                          )
+                        }
                         disabled={!slot?.isActive}
                         className="border border-gray-300 rounded-md px-3 py-2 disabled:bg-gray-100"
                       />
@@ -176,7 +202,13 @@ export default function AvailabilityPage() {
                       <input
                         type="time"
                         value={slot?.endTime || "17:00"}
-                        onChange={(e) => updateAvailability(day.value, 'endTime', e.target.value)}
+                        onChange={(e) =>
+                          updateAvailability(
+                            day.value,
+                            "endTime",
+                            e.target.value
+                          )
+                        }
                         disabled={!slot?.isActive}
                         className="border border-gray-300 rounded-md px-3 py-2 disabled:bg-gray-100"
                       />
@@ -203,12 +235,23 @@ export default function AvailabilityPage() {
 
         {/* Information Card */}
         <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-blue-900 mb-2">How it works</h3>
+          <h3 className="text-lg font-semibold text-blue-900 mb-2">
+            How it works
+          </h3>
           <ul className="text-sm text-blue-800 space-y-1">
             <li>• Set your general availability for each day of the week</li>
-            <li>• Buyers will see available time slots based on your settings and calendar</li>
-            <li>• Your Google Calendar events will automatically block availability</li>
-            <li>• Appointments will be created on both your and the buyer's calendars</li>
+            <li>
+              • Buyers will see available time slots based on your settings and
+              calendar
+            </li>
+            <li>
+              • Your Google Calendar events will automatically block
+              availability
+            </li>
+            <li>
+              • Appointments will be created on both your and the buyer's
+              calendars
+            </li>
           </ul>
         </div>
       </div>

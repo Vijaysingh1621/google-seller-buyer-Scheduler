@@ -2,7 +2,14 @@
 
 import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { Calendar, Settings, LogOut, Clock, Users, CheckCircle } from "lucide-react";
+import {
+  Calendar,
+  Settings,
+  LogOut,
+  Clock,
+  Users,
+  CheckCircle,
+} from "lucide-react";
 import Link from "next/link";
 
 interface Appointment {
@@ -72,10 +79,14 @@ export default function SellerDashboard() {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
               <Calendar className="h-8 w-8 text-blue-600 mr-3" />
-              <h1 className="text-2xl font-bold text-gray-900">Seller Dashboard</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Seller Dashboard
+              </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">Welcome, {session.user.name}</span>
+              <span className="text-sm text-gray-600">
+                Welcome, {session.user.name}
+              </span>
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
                 className="flex items-center text-gray-600 hover:text-gray-900"
@@ -95,31 +106,42 @@ export default function SellerDashboard() {
             <div className="flex items-center">
               <Calendar className="h-8 w-8 text-blue-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Appointments</p>
-                <p className="text-2xl font-semibold text-gray-900">{appointments.length}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Total Appointments
+                </p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {appointments.length}
+                </p>
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center">
               <Clock className="h-8 w-8 text-green-600" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Upcoming</p>
                 <p className="text-2xl font-semibold text-gray-900">
-                  {appointments.filter(apt => apt.status === 'scheduled').length}
+                  {
+                    appointments.filter((apt) => apt.status === "scheduled")
+                      .length
+                  }
                 </p>
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white p-6 rounded-lg shadow">
             <div className="flex items-center">
               <CheckCircle className="h-8 w-8 text-purple-600" />
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Calendar Status</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Calendar Status
+                </p>
                 <p className="text-sm font-semibold text-green-600">
-                  {session.user.calendarConnected ? "Connected" : "Disconnected"}
+                  {session.user.calendarConnected
+                    ? "Connected"
+                    : "Disconnected"}
                 </p>
               </div>
             </div>
@@ -128,7 +150,9 @@ export default function SellerDashboard() {
 
         {/* Quick Actions */}
         <div className="bg-white p-6 rounded-lg shadow mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Quick Actions
+          </h2>
           <div className="flex flex-wrap gap-4">
             <Link
               href="/seller/availability"
@@ -150,7 +174,9 @@ export default function SellerDashboard() {
         {/* Recent Appointments */}
         <div className="bg-white rounded-lg shadow">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">Recent Appointments</h2>
+            <h2 className="text-lg font-semibold text-gray-900">
+              Recent Appointments
+            </h2>
           </div>
           <div className="p-6">
             {loading ? (
@@ -161,17 +187,26 @@ export default function SellerDashboard() {
               <div className="text-center py-8">
                 <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-gray-500">No appointments yet</p>
-                <p className="text-sm text-gray-400">Appointments will appear here once buyers book with you</p>
+                <p className="text-sm text-gray-400">
+                  Appointments will appear here once buyers book with you
+                </p>
               </div>
             ) : (
               <div className="space-y-4">
                 {appointments.slice(0, 5).map((appointment) => (
-                  <div key={appointment._id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                  <div
+                    key={appointment._id}
+                    className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+                  >
                     <div className="flex items-center">
                       <Users className="h-5 w-5 text-gray-400 mr-3" />
                       <div>
-                        <p className="font-medium text-gray-900">{appointment.title}</p>
-                        <p className="text-sm text-gray-600">{appointment.buyerId.name}</p>
+                        <p className="font-medium text-gray-900">
+                          {appointment.title}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {appointment.buyerId.name}
+                        </p>
                       </div>
                     </div>
                     <div className="text-right">
@@ -179,7 +214,10 @@ export default function SellerDashboard() {
                         {new Date(appointment.startTime).toLocaleDateString()}
                       </p>
                       <p className="text-sm text-gray-600">
-                        {new Date(appointment.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {new Date(appointment.startTime).toLocaleTimeString(
+                          [],
+                          { hour: "2-digit", minute: "2-digit" }
+                        )}
                       </p>
                     </div>
                   </div>

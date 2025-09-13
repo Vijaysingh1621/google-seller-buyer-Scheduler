@@ -77,6 +77,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.userId = dbUser._id.toString();
           token.calendarConnected = dbUser.calendarConnected;
         }
+      } else {
+        // Refresh user data from database on every request to get updated role
+        await connectToDatabase();
+        const dbUser = await User.findById(token.userId);
+        if (dbUser) {
+          token.role = dbUser.role;
+          token.calendarConnected = dbUser.calendarConnected;
+        }
       }
       return token;
     },

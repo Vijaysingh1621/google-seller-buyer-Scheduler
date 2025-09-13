@@ -18,7 +18,11 @@ interface TimeSlot {
   end: string;
 }
 
-export default function BookAppointmentPage({ params }: { params: { sellerId: string } }) {
+export default function BookAppointmentPage({
+  params,
+}: {
+  params: { sellerId: string };
+}) {
   const { data: session, status } = useSession();
   const [seller, setSeller] = useState<Seller | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -47,7 +51,9 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
       const response = await fetch("/api/sellers");
       if (response.ok) {
         const sellers = await response.json();
-        const foundSeller = sellers.find((s: Seller) => s._id === params.sellerId);
+        const foundSeller = sellers.find(
+          (s: Seller) => s._id === params.sellerId
+        );
         setSeller(foundSeller || null);
       }
     } catch (error) {
@@ -61,8 +67,10 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
     if (!seller) return;
 
     try {
-      const dateStr = format(selectedDate, 'yyyy-MM-dd');
-      const response = await fetch(`/api/sellers/${seller._id}/availability?date=${dateStr}`);
+      const dateStr = format(selectedDate, "yyyy-MM-dd");
+      const response = await fetch(
+        `/api/sellers/${seller._id}/availability?date=${dateStr}`
+      );
       if (response.ok) {
         const data = await response.json();
         setAvailableSlots(data.slots || []);
@@ -131,7 +139,9 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Seller not found</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            Seller not found
+          </h1>
           <Link
             href="/buyer/appointments"
             className="text-blue-600 hover:text-blue-700"
@@ -148,9 +158,11 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="bg-white p-8 rounded-lg shadow-lg text-center max-w-md">
           <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Booking Confirmed!</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Booking Confirmed!
+          </h1>
           <p className="text-gray-600 mb-6">
-            Your appointment with {seller.name} has been scheduled successfully. 
+            Your appointment with {seller.name} has been scheduled successfully.
             You'll receive calendar invites shortly.
           </p>
           <div className="space-y-3">
@@ -178,7 +190,7 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center py-4">
-            <Link 
+            <Link
               href="/buyer/appointments"
               className="flex items-center text-gray-600 hover:text-gray-900 mr-4"
             >
@@ -186,7 +198,9 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
               Back to Sellers
             </Link>
             <Calendar className="h-8 w-8 text-blue-600 mr-3" />
-            <h1 className="text-2xl font-bold text-gray-900">Book with {seller.name}</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Book with {seller.name}
+            </h1>
           </div>
         </div>
       </header>
@@ -207,7 +221,9 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
               </div>
             )}
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">{seller.name}</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                {seller.name}
+              </h2>
               <p className="text-gray-600">{seller.email}</p>
               <div className="flex items-center mt-1 text-sm text-green-600">
                 <Clock className="h-4 w-4 mr-1" />
@@ -220,42 +236,53 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Date Selection */}
           <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Select Date</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Select Date
+            </h3>
             <div className="grid grid-cols-7 gap-2">
               {generateWeekDates().map((date) => (
                 <button
                   key={date.toISOString()}
                   onClick={() => setSelectedDate(date)}
                   className={`p-2 rounded-lg text-center ${
-                    format(date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
-                      ? 'bg-blue-600 text-white'
+                    format(date, "yyyy-MM-dd") ===
+                    format(selectedDate, "yyyy-MM-dd")
+                      ? "bg-blue-600 text-white"
                       : date < new Date()
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : "bg-gray-100 hover:bg-gray-200 text-gray-700"
                   }`}
                   disabled={date < new Date()}
                 >
-                  <div className="text-xs">{format(date, 'EEE')}</div>
-                  <div className="text-sm font-semibold">{format(date, 'd')}</div>
+                  <div className="text-xs">{format(date, "EEE")}</div>
+                  <div className="text-sm font-semibold">
+                    {format(date, "d")}
+                  </div>
                 </button>
               ))}
             </div>
-            
+
             <div className="mt-4">
               <p className="text-sm text-gray-600">
-                Selected: {format(selectedDate, 'EEEE, MMMM d, yyyy')}
+                Selected: {format(selectedDate, "EEEE, MMMM d, yyyy")}
               </p>
             </div>
           </div>
 
           {/* Time Slots */}
           <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Available Times</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Available Times
+            </h3>
             {availableSlots.length === 0 ? (
               <div className="text-center py-8">
                 <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500">No available slots for this date</p>
-                <p className="text-sm text-gray-400">Try selecting a different date</p>
+                <p className="text-gray-500">
+                  No available slots for this date
+                </p>
+                <p className="text-sm text-gray-400">
+                  Try selecting a different date
+                </p>
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-2">
@@ -265,11 +292,11 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
                     onClick={() => setSelectedSlot(slot)}
                     className={`p-2 rounded-lg text-sm ${
                       selectedSlot === slot
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-100 hover:bg-gray-200 text-gray-700"
                     }`}
                   >
-                    {format(new Date(slot.start), 'h:mm a')}
+                    {format(new Date(slot.start), "h:mm a")}
                   </button>
                 ))}
               </div>
@@ -280,7 +307,9 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
         {/* Appointment Details */}
         {selectedSlot && (
           <div className="bg-white p-6 rounded-lg shadow mt-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Appointment Details</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Appointment Details
+            </h3>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -295,7 +324,7 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
                   required
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Description (Optional)
@@ -310,12 +339,25 @@ export default function BookAppointmentPage({ params }: { params: { sellerId: st
               </div>
 
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-medium text-gray-900 mb-2">Booking Summary</h4>
+                <h4 className="font-medium text-gray-900 mb-2">
+                  Booking Summary
+                </h4>
                 <div className="text-sm text-gray-600 space-y-1">
-                  <p><strong>With:</strong> {seller.name}</p>
-                  <p><strong>Date:</strong> {format(selectedDate, 'EEEE, MMMM d, yyyy')}</p>
-                  <p><strong>Time:</strong> {format(new Date(selectedSlot.start), 'h:mm a')} - {format(new Date(selectedSlot.end), 'h:mm a')}</p>
-                  <p><strong>Duration:</strong> 1 hour</p>
+                  <p>
+                    <strong>With:</strong> {seller.name}
+                  </p>
+                  <p>
+                    <strong>Date:</strong>{" "}
+                    {format(selectedDate, "EEEE, MMMM d, yyyy")}
+                  </p>
+                  <p>
+                    <strong>Time:</strong>{" "}
+                    {format(new Date(selectedSlot.start), "h:mm a")} -{" "}
+                    {format(new Date(selectedSlot.end), "h:mm a")}
+                  </p>
+                  <p>
+                    <strong>Duration:</strong> 1 hour
+                  </p>
                 </div>
               </div>
 

@@ -15,7 +15,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Scheduler - Book Appointments with Ease",
-  description: "Connect buyers and sellers through seamless appointment scheduling integrated with Google Calendar",
+  description:
+    "Connect buyers and sellers through seamless appointment scheduling integrated with Google Calendar",
 };
 
 export default function RootLayout({
@@ -28,9 +29,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionProvider>
-          {children}
-        </SessionProvider>
+        <SessionProvider>{children}</SessionProvider>
       </body>
     </html>
   );

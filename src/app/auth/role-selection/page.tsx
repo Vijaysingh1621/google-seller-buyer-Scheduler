@@ -2,64 +2,66 @@
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Calendar, User, Check } from "lucide-react";
 
 export default function RoleSelection() {
   const { data: session, status } = useSession();
-  const [selectedRole, setSelectedRole] = useState<'seller' | 'buyer'>('buyer');
+  const [selectedRole, setSelectedRole] = useState<"seller" | "buyer">("buyer");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     // Check if user already has a role set
-    if (session?.user?.role && (session.user.role === 'seller' || session.user.role === 'buyer')) {
+    if (
+      session?.user?.role &&
+      (session.user.role === "seller" || session.user.role === "buyer")
+    ) {
       // User already has a role, redirect to appropriate dashboard
-      if (session.user.role === 'seller') {
-        router.push('/seller/dashboard');
+      if (session.user.role === "seller") {
+        router.push("/seller/dashboard");
       } else {
-        router.push('/buyer/dashboard');
+        router.push("/buyer/dashboard");
       }
+      return;
     }
 
-    // Check for stored role selection from localStorage
-    const storedRole = localStorage.getItem('selectedRole');
-    if (storedRole && (storedRole === 'seller' || storedRole === 'buyer')) {
-      setSelectedRole(storedRole as 'seller' | 'buyer');
+    // Get role from URL parameter
+    const urlRole = searchParams.get("role");
+    if (urlRole && (urlRole === "seller" || urlRole === "buyer")) {
+      setSelectedRole(urlRole as "seller" | "buyer");
     }
-  }, [session, router]);
+  }, [session, router, searchParams]);
 
   const handleRoleConfirm = async () => {
     if (!session?.user?.id) return;
 
     setIsLoading(true);
     try {
-      const response = await fetch('/api/user/role', {
-        method: 'PUT',
+      console.log("Updating role to:", selectedRole);
+      const response = await fetch("/api/user/role", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ role: selectedRole }),
       });
 
       if (response.ok) {
-        // Clear stored role
-        localStorage.removeItem('selectedRole');
-        
-        // Redirect to appropriate dashboard
-        if (selectedRole === 'seller') {
-          router.push('/seller/dashboard');
+        console.log("Role updated successfully");
+
+        // Force a complete redirect with page reload
+        if (selectedRole === "seller") {
+          window.location.href = "/seller/dashboard";
         } else {
-          router.push('/buyer/dashboard');
+          window.location.href = "/buyer/dashboard";
         }
-        
-        // Force page reload to update session
-        window.location.reload();
       } else {
-        console.error('Failed to update role');
+        console.error("Failed to update role", await response.text());
       }
     } catch (error) {
-      console.error('Error updating role:', error);
+      console.error("Error updating role:", error);
     } finally {
       setIsLoading(false);
     }
@@ -103,11 +105,11 @@ export default function RoleSelection() {
               <div className="mt-4 space-y-4">
                 <div
                   className={`relative border rounded-lg p-4 cursor-pointer ${
-                    selectedRole === 'buyer'
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                    selectedRole === "buyer"
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-gray-300 hover:border-gray-400"
                   }`}
-                  onClick={() => setSelectedRole('buyer')}
+                  onClick={() => setSelectedRole("buyer")}
                 >
                   <div className="flex items-start">
                     <div className="flex items-center h-5">
@@ -115,8 +117,8 @@ export default function RoleSelection() {
                         type="radio"
                         name="role"
                         value="buyer"
-                        checked={selectedRole === 'buyer'}
-                        onChange={() => setSelectedRole('buyer')}
+                        checked={selectedRole === "buyer"}
+                        onChange={() => setSelectedRole("buyer")}
                         className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                       />
                     </div>
@@ -129,7 +131,7 @@ export default function RoleSelection() {
                       </p>
                     </div>
                   </div>
-                  {selectedRole === 'buyer' && (
+                  {selectedRole === "buyer" && (
                     <div className="absolute top-4 right-4">
                       <Check className="h-5 w-5 text-blue-600" />
                     </div>
@@ -138,11 +140,11 @@ export default function RoleSelection() {
 
                 <div
                   className={`relative border rounded-lg p-4 cursor-pointer ${
-                    selectedRole === 'seller'
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-300 hover:border-gray-400'
+                    selectedRole === "seller"
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-gray-300 hover:border-gray-400"
                   }`}
-                  onClick={() => setSelectedRole('seller')}
+                  onClick={() => setSelectedRole("seller")}
                 >
                   <div className="flex items-start">
                     <div className="flex items-center h-5">
@@ -150,8 +152,8 @@ export default function RoleSelection() {
                         type="radio"
                         name="role"
                         value="seller"
-                        checked={selectedRole === 'seller'}
-                        onChange={() => setSelectedRole('seller')}
+                        checked={selectedRole === "seller"}
+                        onChange={() => setSelectedRole("seller")}
                         className="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                       />
                     </div>
@@ -164,7 +166,7 @@ export default function RoleSelection() {
                       </p>
                     </div>
                   </div>
-                  {selectedRole === 'seller' && (
+                  {selectedRole === "seller" && (
                     <div className="absolute top-4 right-4">
                       <Check className="h-5 w-5 text-blue-600" />
                     </div>
@@ -185,7 +187,7 @@ export default function RoleSelection() {
                     Setting up your account...
                   </div>
                 ) : (
-                  'Continue'
+                  "Continue"
                 )}
               </button>
             </div>

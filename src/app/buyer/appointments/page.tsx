@@ -11,7 +11,7 @@ interface Appointment {
   description?: string;
   startTime: string;
   endTime: string;
-  status: 'scheduled' | 'cancelled' | 'completed';
+  status: "scheduled" | "cancelled" | "completed";
   seller: {
     _id: string;
     name: string;
@@ -25,7 +25,9 @@ export default function BuyerAppointments() {
   const { data: session, status } = useSession();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<'all' | 'scheduled' | 'completed' | 'cancelled'>('all');
+  const [filter, setFilter] = useState<
+    "all" | "scheduled" | "completed" | "cancelled"
+  >("all");
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -47,37 +49,37 @@ export default function BuyerAppointments() {
     }
   };
 
-  const filteredAppointments = appointments.filter(appointment => {
-    if (filter === 'all') return true;
+  const filteredAppointments = appointments.filter((appointment) => {
+    if (filter === "all") return true;
     return appointment.status === filter;
   });
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'scheduled':
-        return 'bg-green-100 text-green-800';
-      case 'cancelled':
-        return 'bg-red-100 text-red-800';
-      case 'completed':
-        return 'bg-blue-100 text-blue-800';
+      case "scheduled":
+        return "bg-green-100 text-green-800";
+      case "cancelled":
+        return "bg-red-100 text-red-800";
+      case "completed":
+        return "bg-blue-100 text-blue-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     return {
-      date: date.toLocaleDateString('en-US', { 
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+      date: date.toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
       }),
-      time: date.toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit' 
-      })
+      time: date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
     };
   };
 
@@ -94,8 +96,13 @@ export default function BuyerAppointments() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Access Denied</h1>
-          <p className="text-gray-600 mb-4">Please sign in to view your appointments.</p>
-          <Link href="/auth/signin" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <p className="text-gray-600 mb-4">
+            Please sign in to view your appointments.
+          </p>
+          <Link
+            href="/auth/signin"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
             Sign In
           </Link>
         </div>
@@ -130,7 +137,9 @@ export default function BuyerAppointments() {
                 <ArrowLeft className="h-6 w-6 text-gray-600 hover:text-gray-900" />
               </Link>
               <Calendar className="h-8 w-8 text-blue-600 mr-3" />
-              <h1 className="text-2xl font-bold text-gray-900">My Appointments</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                My Appointments
+              </h1>
             </div>
             <div className="flex items-center space-x-4">
               <Link
@@ -158,26 +167,26 @@ export default function BuyerAppointments() {
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex space-x-8">
               {[
-                { key: 'all', label: 'All Appointments' },
-                { key: 'scheduled', label: 'Upcoming' },
-                { key: 'completed', label: 'Completed' },
-                { key: 'cancelled', label: 'Cancelled' }
+                { key: "all", label: "All Appointments" },
+                { key: "scheduled", label: "Upcoming" },
+                { key: "completed", label: "Completed" },
+                { key: "cancelled", label: "Cancelled" },
               ].map((tab) => (
                 <button
                   key={tab.key}
                   onClick={() => setFilter(tab.key as any)}
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     filter === tab.key
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      ? "border-blue-500 text-blue-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                   }`}
                 >
                   {tab.label}
                   <span className="ml-2 py-0.5 px-2 rounded-full text-xs bg-gray-100 text-gray-900">
-                    {tab.key === 'all' 
-                      ? appointments.length 
-                      : appointments.filter(apt => apt.status === tab.key).length
-                    }
+                    {tab.key === "all"
+                      ? appointments.length
+                      : appointments.filter((apt) => apt.status === tab.key)
+                          .length}
                   </span>
                 </button>
               ))}
@@ -200,7 +209,7 @@ export default function BuyerAppointments() {
               {filteredAppointments.map((appointment) => {
                 const { date, time } = formatDateTime(appointment.startTime);
                 const endTime = formatDateTime(appointment.endTime).time;
-                
+
                 return (
                   <div key={appointment._id} className="p-6 hover:bg-gray-50">
                     <div className="flex items-start justify-between">
@@ -209,46 +218,56 @@ export default function BuyerAppointments() {
                           <h3 className="text-lg font-semibold text-gray-900 mr-3">
                             {appointment.title}
                           </h3>
-                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(appointment.status)}`}>
-                            {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
+                          <span
+                            className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                              appointment.status
+                            )}`}
+                          >
+                            {appointment.status.charAt(0).toUpperCase() +
+                              appointment.status.slice(1)}
                           </span>
                         </div>
-                        
+
                         <div className="flex items-center text-gray-600 mb-2">
                           <User className="h-4 w-4 mr-2" />
                           <span>with {appointment.seller.name}</span>
                           <span className="mx-2">•</span>
                           <span>{appointment.seller.email}</span>
                         </div>
-                        
+
                         <div className="flex items-center text-gray-600 mb-2">
                           <Calendar className="h-4 w-4 mr-2" />
                           <span>{date}</span>
                         </div>
-                        
+
                         <div className="flex items-center text-gray-600 mb-2">
                           <Clock className="h-4 w-4 mr-2" />
-                          <span>{time} - {endTime}</span>
+                          <span>
+                            {time} - {endTime}
+                          </span>
                         </div>
-                        
+
                         {appointment.description && (
-                          <p className="text-gray-600 mt-2">{appointment.description}</p>
+                          <p className="text-gray-600 mt-2">
+                            {appointment.description}
+                          </p>
                         )}
-                        
-                        {appointment.meetingLink && appointment.status === 'scheduled' && (
-                          <div className="mt-3">
-                            <a
-                              href={appointment.meetingLink}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center px-3 py-1 border border-blue-300 text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100"
-                            >
-                              Join Meeting
-                            </a>
-                          </div>
-                        )}
+
+                        {appointment.meetingLink &&
+                          appointment.status === "scheduled" && (
+                            <div className="mt-3">
+                              <a
+                                href={appointment.meetingLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center px-3 py-1 border border-blue-300 text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100"
+                              >
+                                Join Meeting
+                              </a>
+                            </div>
+                          )}
                       </div>
-                      
+
                       <div className="ml-6 flex items-center">
                         {appointment.seller.image ? (
                           <img
@@ -271,13 +290,14 @@ export default function BuyerAppointments() {
             <div className="text-center py-12">
               <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                {filter === 'all' ? 'No appointments yet' : `No ${filter} appointments`}
+                {filter === "all"
+                  ? "No appointments yet"
+                  : `No ${filter} appointments`}
               </h3>
               <p className="text-gray-600 mb-4">
-                {filter === 'all' 
-                  ? 'Start by booking your first appointment with a seller.'
-                  : `You don't have any ${filter} appointments.`
-                }
+                {filter === "all"
+                  ? "Start by booking your first appointment with a seller."
+                  : `You don't have any ${filter} appointments.`}
               </p>
               <Link
                 href="/buyer/dashboard"
