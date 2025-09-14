@@ -12,6 +12,7 @@ import {
   Plus,
 } from "lucide-react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 interface Seller {
   _id: string;
@@ -54,9 +55,17 @@ export default function BuyerDashboard() {
       if (response.ok) {
         const data = await response.json();
         setSellers(data);
+        if (data.length === 0) {
+          toast('No sellers available yet. Check back later!', {
+            icon: '👥',
+          });
+        }
+      } else {
+        toast.error('Failed to load available sellers.');
       }
     } catch (error) {
       console.error("Error fetching sellers:", error);
+      toast.error('Error loading sellers. Please refresh the page.');
     }
   };
 

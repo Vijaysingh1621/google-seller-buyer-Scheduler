@@ -13,12 +13,16 @@ export default function RoleSelection() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    console.log("Session in role selection:", session);
+    console.log("User role:", session?.user?.role);
+    
     // Check if user already has a role set
     if (
       session?.user?.role &&
       (session.user.role === "seller" || session.user.role === "buyer")
     ) {
       // User already has a role, redirect to appropriate dashboard
+      console.log("User has role, redirecting to:", session.user.role, "dashboard");
       if (session.user.role === "seller") {
         router.push("/seller/dashboard");
       } else {
@@ -29,6 +33,7 @@ export default function RoleSelection() {
 
     // Get role from URL parameter
     const urlRole = searchParams.get("role");
+    console.log("URL role parameter:", urlRole);
     if (urlRole && (urlRole === "seller" || urlRole === "buyer")) {
       setSelectedRole(urlRole as "seller" | "buyer");
     }
@@ -51,11 +56,14 @@ export default function RoleSelection() {
       if (response.ok) {
         console.log("Role updated successfully");
 
-        // Force a complete redirect with page reload
+        // Add a small delay to ensure database update is processed
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Force a complete page reload to refresh the session
         if (selectedRole === "seller") {
-          window.location.href = "/seller/dashboard";
+          window.location.replace("/seller/dashboard");
         } else {
-          window.location.href = "/buyer/dashboard";
+          window.location.replace("/buyer/dashboard");
         }
       } else {
         console.error("Failed to update role", await response.text());

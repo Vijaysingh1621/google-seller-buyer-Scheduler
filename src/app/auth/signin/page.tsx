@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function SignInPage() {
-  const [role, setRole] = useState<"seller" | "buyer">("buyer");
+  const [role, setRole] = useState<"seller" | "buyer">();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();

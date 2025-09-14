@@ -5,7 +5,7 @@ export interface IUser extends Document {
   name: string;
   image?: string;
   googleId: string;
-  role: 'seller' | 'buyer';
+  role?: 'seller' | 'buyer' | null;
   accessToken?: string;
   refreshToken?: string;
   tokenExpiry?: Date;
@@ -38,7 +38,8 @@ const UserSchema = new Schema<IUser>({
   role: {
     type: String,
     enum: ['seller', 'buyer'],
-    required: true,
+    required: false, // Allow null for new users who haven't selected a role yet
+    default: null,
   },
   accessToken: {
     type: String,

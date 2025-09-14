@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { Calendar, Save, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 interface AvailabilitySlot {
   dayOfWeek: number;
@@ -89,14 +90,16 @@ export default function AvailabilityPage() {
       });
 
       if (response.ok) {
-        // Show success message
-        alert("Availability saved successfully!");
+        toast.success("Availability saved successfully! Buyers can now book appointments with you.", {
+          duration: 5000,
+        });
       } else {
-        alert("Error saving availability");
+        const errorData = await response.json();
+        toast.error(errorData.error || "Error saving availability. Please try again.");
       }
     } catch (error) {
       console.error("Error saving availability:", error);
-      alert("Error saving availability");
+      toast.error("Network error. Please check your connection and try again.");
     } finally {
       setSaving(false);
     }

@@ -7,9 +7,10 @@ import { getFreeBusy, generateTimeSlots } from "@/lib/calendar";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { sellerId: string } }
+  { params }: { params: Promise<{ sellerId: string }> }
 ) {
   try {
+    const { sellerId } = await params;
     const session = await auth();
     
     if (!session || !session.user) {
@@ -26,7 +27,7 @@ export async function GET(
     await connectToDatabase();
     
     // Get seller info
-    const seller = await User.findById(params.sellerId);
+    const seller = await User.findById(sellerId);
     if (!seller || seller.role !== 'seller') {
       return NextResponse.json({ error: "Seller not found" }, { status: 404 });
     }
@@ -36,7 +37,7 @@ export async function GET(
     const dayOfWeek = requestDate.getDay();
     
     const availability = await Availability.findOne({
-      sellerId: params.sellerId,
+      sellerId: sellerId,
       dayOfWeek: dayOfWeek,
       isActive: true,
     });

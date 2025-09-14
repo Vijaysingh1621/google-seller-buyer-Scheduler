@@ -39,14 +39,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         if (!existingUser) {
-          // For new users, we'll set role later via API call
-          // Default to buyer for now
+          // For new users, don't set a default role - force them to choose
           existingUser = await User.create({
             email: user.email,
             name: user.name,
             image: user.image,
             googleId: account.providerAccountId,
-            role: 'buyer', // Default role, will be updated based on selection
+            role: null, // No default role - user must choose
             accessToken: account.access_token,
             refreshToken: account.refresh_token,
             tokenExpiry: account.expires_at ? new Date(account.expires_at * 1000) : undefined,

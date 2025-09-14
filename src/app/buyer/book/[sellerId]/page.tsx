@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Calendar, Clock, ArrowLeft, User, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { format, addDays, startOfWeek } from "date-fns";
+import toast from "react-hot-toast";
 
 interface Seller {
   _id: string;
@@ -21,10 +22,11 @@ interface TimeSlot {
 export default function BookAppointmentPage({
   params,
 }: {
-  params: { sellerId: string };
+  params: Promise<{ sellerId: string }>;
 }) {
   const { data: session, status } = useSession();
   const [seller, setSeller] = useState<Seller | null>(null);
+  const [sellerId, setSellerId] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
@@ -35,10 +37,17 @@ export default function BookAppointmentPage({
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
   useEffect(() => {
-    if (status === "authenticated") {
+    // Resolve params
+    params.then(({ sellerId: paramsSellerId }) => {
+      setSellerId(paramsSellerId);
+    });
+  }, [params]);
+
+  useEffect(() => {
+    if (status === "authenticated" && sellerId) {
       fetchSeller();
     }
-  }, [status, params.sellerId]);
+  }, [status, sellerId]);
 
   useEffect(() => {
     if (seller) {
@@ -52,7 +61,7 @@ export default function BookAppointmentPage({
       if (response.ok) {
         const sellers = await response.json();
         const foundSeller = sellers.find(
-          (s: Seller) => s._id === params.sellerId
+          (s: Seller) => s._id === sellerId
         );
         setSeller(foundSeller || null);
       }
@@ -74,10 +83,18 @@ export default function BookAppointmentPage({
       if (response.ok) {
         const data = await response.json();
         setAvailableSlots(data.slots || []);
+        if (!data.slots || data.slots.length === 0) {
+          toast('No available slots for this date. Try selecting another date.', {
+            icon: '📅',
+          });
+        }
+      } else {
+        toast.error('Failed to load available time slots.');
       }
     } catch (error) {
       console.error("Error fetching available slots:", error);
       setAvailableSlots([]);
+      toast.error('Error loading availability. Please try again.');
     }
   };
 
@@ -101,13 +118,23 @@ export default function BookAppointmentPage({
       });
 
       if (response.ok) {
+        const appointment = await response.json();
         setBookingSuccess(true);
+        toast.success(
+          `Appointment booked successfully! ${
+            appointment.meetingLink 
+              ? 'Google Meet link has been sent to your calendar.' 
+              : 'Check your calendar for details.'
+          }`,
+          { duration: 6000 }
+        );
       } else {
-        alert("Error booking appointment. Please try again.");
+        const errorData = await response.json();
+        toast.error(errorData.error || "Error booking appointment. Please try again.");
       }
     } catch (error) {
       console.error("Error booking appointment:", error);
-      alert("Error booking appointment. Please try again.");
+      toast.error("Network error. Please check your connection and try again.");
     } finally {
       setBooking(false);
     }

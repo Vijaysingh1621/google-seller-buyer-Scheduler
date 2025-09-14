@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth";
 import connectToDatabase from "@/lib/mongodb";
 import Appointment from "@/models/Appointment";
 import User from "@/models/User";
-import { createCalendarEvent } from "@/lib/calendar";
+import { createDualCalendarEvent } from "@/lib/calendar";
 
 export async function POST(request: NextRequest) {
   try {
@@ -45,33 +45,25 @@ export async function POST(request: NextRequest) {
     });
 
     // Create calendar events for both participants
-    const eventData = {
-      summary: title,
-      description: description || `Meeting between ${buyer.name} and ${seller.name}`,
-      start: {
-        dateTime: new Date(startTime).toISOString(),
-        timeZone: 'UTC',
-      },
-      end: {
-        dateTime: new Date(endTime).toISOString(),
-        timeZone: 'UTC',
-      },
-      attendees: [
-        { email: buyer.email },
-        { email: seller.email },
-      ],
-    };
-
     try {
-      // Create event on seller's calendar
-      const sellerEvent = await createCalendarEvent(sellerId, eventData);
-      
-      // Create event on buyer's calendar
-      const buyerEvent = await createCalendarEvent(session.user.id, eventData);
+      const calendarResult = await createDualCalendarEvent(
+        session.user.id, // buyerId
+        sellerId,        // sellerId
+        {
+          title,
+          description: description || `Meeting between ${buyer.name} and ${seller.name}`,
+          startTime: new Date(startTime),
+          endTime: new Date(endTime),
+          buyerEmail: buyer.email,
+          sellerEmail: seller.email,
+          buyerName: buyer.name,
+          sellerName: seller.name,
+        }
+      );
       
       // Update appointment with Google event ID and meeting link
-      appointment.googleEventId = sellerEvent.id;
-      appointment.meetingLink = sellerEvent.hangoutLink;
+      appointment.googleEventId = calendarResult.eventId;
+      appointment.meetingLink = calendarResult.meetingLink;
       await appointment.save();
 
     } catch (calendarError) {

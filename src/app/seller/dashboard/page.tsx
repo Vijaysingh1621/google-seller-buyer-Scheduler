@@ -11,6 +11,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 interface Appointment {
   _id: string;
@@ -41,9 +42,18 @@ export default function SellerDashboard() {
       if (response.ok) {
         const data = await response.json();
         setAppointments(data);
+        if (data.length === 0) {
+          toast('No appointments yet. Share your availability to start receiving bookings!', {
+            icon: '📅',
+            duration: 5000,
+          });
+        }
+      } else {
+        toast.error('Failed to load appointments.');
       }
     } catch (error) {
       console.error("Error fetching appointments:", error);
+      toast.error('Error loading appointments. Please refresh the page.');
     } finally {
       setLoading(false);
     }
