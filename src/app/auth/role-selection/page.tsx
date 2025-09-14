@@ -15,14 +15,18 @@ export default function RoleSelection() {
   useEffect(() => {
     console.log("Session in role selection:", session);
     console.log("User role:", session?.user?.role);
-    
+
     // Check if user already has a role set
     if (
       session?.user?.role &&
       (session.user.role === "seller" || session.user.role === "buyer")
     ) {
       // User already has a role, redirect to appropriate dashboard
-      console.log("User has role, redirecting to:", session.user.role, "dashboard");
+      console.log(
+        "User has role, redirecting to:",
+        session.user.role,
+        "dashboard"
+      );
       if (session.user.role === "seller") {
         router.push("/seller/dashboard");
       } else {
@@ -57,7 +61,7 @@ export default function RoleSelection() {
         console.log("Role updated successfully");
 
         // Add a small delay to ensure database update is processed
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
         // Force a complete page reload to refresh the session
         if (selectedRole === "seller") {

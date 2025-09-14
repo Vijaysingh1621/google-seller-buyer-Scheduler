@@ -90,12 +90,17 @@ export default function AvailabilityPage() {
       });
 
       if (response.ok) {
-        toast.success("Availability saved successfully! Buyers can now book appointments with you.", {
-          duration: 5000,
-        });
+        toast.success(
+          "Availability saved successfully! Buyers can now book appointments with you.",
+          {
+            duration: 5000,
+          }
+        );
       } else {
         const errorData = await response.json();
-        toast.error(errorData.error || "Error saving availability. Please try again.");
+        toast.error(
+          errorData.error || "Error saving availability. Please try again."
+        );
       }
     } catch (error) {
       console.error("Error saving availability:", error);

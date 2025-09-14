@@ -60,9 +60,7 @@ export default function BookAppointmentPage({
       const response = await fetch("/api/sellers");
       if (response.ok) {
         const sellers = await response.json();
-        const foundSeller = sellers.find(
-          (s: Seller) => s._id === sellerId
-        );
+        const foundSeller = sellers.find((s: Seller) => s._id === sellerId);
         setSeller(foundSeller || null);
       }
     } catch (error) {
@@ -84,17 +82,20 @@ export default function BookAppointmentPage({
         const data = await response.json();
         setAvailableSlots(data.slots || []);
         if (!data.slots || data.slots.length === 0) {
-          toast('No available slots for this date. Try selecting another date.', {
-            icon: '📅',
-          });
+          toast(
+            "No available slots for this date. Try selecting another date.",
+            {
+              icon: "📅",
+            }
+          );
         }
       } else {
-        toast.error('Failed to load available time slots.');
+        toast.error("Failed to load available time slots.");
       }
     } catch (error) {
       console.error("Error fetching available slots:", error);
       setAvailableSlots([]);
-      toast.error('Error loading availability. Please try again.');
+      toast.error("Error loading availability. Please try again.");
     }
   };
 
@@ -122,15 +123,17 @@ export default function BookAppointmentPage({
         setBookingSuccess(true);
         toast.success(
           `Appointment booked successfully! ${
-            appointment.meetingLink 
-              ? 'Google Meet link has been sent to your calendar.' 
-              : 'Check your calendar for details.'
+            appointment.meetingLink
+              ? "Google Meet link has been sent to your calendar."
+              : "Check your calendar for details."
           }`,
           { duration: 6000 }
         );
       } else {
         const errorData = await response.json();
-        toast.error(errorData.error || "Error booking appointment. Please try again.");
+        toast.error(
+          errorData.error || "Error booking appointment. Please try again."
+        );
       }
     } catch (error) {
       console.error("Error booking appointment:", error);
