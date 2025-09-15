@@ -62,7 +62,7 @@ export async function createCalendarEvent(
     start: { dateTime: string; timeZone?: string };
     end: { dateTime: string; timeZone?: string };
     attendees?: { email: string }[];
-    conferenceData?: any;
+    conferenceData?: object;
   }
 ) {
   try {
@@ -93,11 +93,12 @@ export async function createCalendarEvent(
     });
 
     return response.data;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating calendar event:', error);
     
     // If it's a 403 error (API not enabled), return a mock event
-    if (error?.code === 403 || error?.status === 403) {
+    const errorObj = error as { code?: number; status?: number };
+    if (errorObj?.code === 403 || errorObj?.status === 403) {
       console.warn('Google Calendar API not enabled. Creating mock event.');
       return {
         id: 'mock-event-' + Math.random().toString(36).substring(7),
@@ -136,7 +137,7 @@ export function generateTimeSlots(
   startTime: string,
   endTime: string,
   date: Date,
-  busyTimes: any[] = [],
+  busyTimes: Array<{ start: string; end: string }> = [],
   slotDuration: number = 60 // minutes
 ): { start: Date; end: Date }[] {
   const slots: { start: Date; end: Date }[] = [];

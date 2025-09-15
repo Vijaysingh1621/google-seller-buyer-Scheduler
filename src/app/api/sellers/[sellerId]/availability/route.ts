@@ -70,11 +70,16 @@ export async function GET(
     }
 
     // Generate available time slots
+    const busyTimesString = busyTimes.map(period => ({
+      start: period.start.toISOString(),
+      end: period.end.toISOString()
+    }));
+
     const slots = generateTimeSlots(
       availability.startTime,
       availability.endTime,
       requestDate,
-      busyTimes,
+      busyTimesString,
       60 // 60-minute slots
     );
 

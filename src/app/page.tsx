@@ -37,13 +37,13 @@ export default function Home() {
               href="/auth/signin?role=seller"
               className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
             >
-              I'm a Seller
+              I&apos;m a Seller
             </Link>
             <Link
               href="/auth/signin?role=buyer"
               className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
             >
-              I'm a Buyer
+              I&apos;m a Buyer
             </Link>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default function Home() {
             <Users className="h-12 w-12 text-purple-600 mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">Two-way Booking</h3>
             <p className="text-gray-600">
-              Appointments are created on both participant's calendars
+              Appointments are created on both participant&apos;s calendars
               automatically.
             </p>
           </div>

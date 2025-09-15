@@ -60,7 +60,6 @@ export default function AppointmentsPage() {
   };
 
   const getFilteredAppointments = () => {
-    const now = new Date();
     switch (filter) {
       case "upcoming":
         return appointments.filter(
@@ -82,7 +81,6 @@ export default function AppointmentsPage() {
   };
 
   const getAppointmentStatus = (appointment: Appointment) => {
-    const now = new Date();
     const startTime = new Date(appointment.startTime);
     const endTime = new Date(appointment.endTime);
 
@@ -179,7 +177,7 @@ export default function AppointmentsPage() {
               ].map(({ key, label }) => (
                 <button
                   key={key}
-                  onClick={() => setFilter(key as any)}
+                  onClick={() => setFilter(key as "all" | "upcoming" | "past")}
                   className={`px-3 py-1 rounded-md text-sm font-medium ${
                     filter === key
                       ? "bg-blue-600 text-white"

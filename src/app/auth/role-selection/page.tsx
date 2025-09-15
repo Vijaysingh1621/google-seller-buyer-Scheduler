@@ -1,11 +1,11 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Calendar, User, Check } from "lucide-react";
+import { Calendar, Check } from "lucide-react";
 
-export default function RoleSelection() {
+function RoleSelectionContent() {
   const { data: session, status } = useSession();
   const [selectedRole, setSelectedRole] = useState<"seller" | "buyer">("buyer");
   const [isLoading, setIsLoading] = useState(false);
@@ -136,7 +136,7 @@ export default function RoleSelection() {
                     </div>
                     <div className="ml-3">
                       <label className="font-medium text-gray-900 cursor-pointer">
-                        I'm a Buyer
+                        I&apos;m a Buyer
                       </label>
                       <p className="text-sm text-gray-500">
                         I want to book appointments with sellers
@@ -171,7 +171,7 @@ export default function RoleSelection() {
                     </div>
                     <div className="ml-3">
                       <label className="font-medium text-gray-900 cursor-pointer">
-                        I'm a Seller
+                        I&apos;m a Seller
                       </label>
                       <p className="text-sm text-gray-500">
                         I want to offer my time for appointments
@@ -207,5 +207,13 @@ export default function RoleSelection() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RoleSelection() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <RoleSelectionContent />
+    </Suspense>
   );
 }

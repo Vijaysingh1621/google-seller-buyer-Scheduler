@@ -69,7 +69,7 @@ export default function AvailabilityPage() {
   const updateAvailability = (
     dayOfWeek: number,
     field: keyof AvailabilitySlot,
-    value: any
+    value: string | boolean
   ) => {
     setAvailability((prev) =>
       prev.map((slot) =>
@@ -257,7 +257,7 @@ export default function AvailabilityPage() {
               availability
             </li>
             <li>
-              • Appointments will be created on both your and the buyer's
+              • Appointments will be created on both your and the buyer&apos;s
               calendars
             </li>
           </ul>

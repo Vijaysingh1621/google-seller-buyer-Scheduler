@@ -24,7 +24,7 @@ export default function BookAppointmentPage({
 }: {
   params: Promise<{ sellerId: string }>;
 }) {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [seller, setSeller] = useState<Seller | null>(null);
   const [sellerId, setSellerId] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
@@ -193,7 +193,7 @@ export default function BookAppointmentPage({
           </h1>
           <p className="text-gray-600 mb-6">
             Your appointment with {seller.name} has been scheduled successfully.
-            You'll receive calendar invites shortly.
+            You&apos;ll receive calendar invites shortly.
           </p>
           <div className="space-y-3">
             <Link

@@ -9,7 +9,6 @@ import {
   LogOut,
   Search,
   ArrowRight,
-  Plus,
 } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
