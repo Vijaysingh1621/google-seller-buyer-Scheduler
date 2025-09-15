@@ -174,7 +174,11 @@ export default function BuyerAppointments() {
               ].map((tab) => (
                 <button
                   key={tab.key}
-                  onClick={() => setFilter(tab.key as "all" | "scheduled" | "completed" | "cancelled")}
+                  onClick={() =>
+                    setFilter(
+                      tab.key as "all" | "scheduled" | "completed" | "cancelled"
+                    )
+                  }
                   className={`py-2 px-1 border-b-2 font-medium text-sm ${
                     filter === tab.key
                       ? "border-blue-500 text-blue-600"
