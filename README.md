@@ -1,6 +1,20 @@
 # Next.js Scheduler - Google Calendar Integration
 
 A full-stack appointment booking application built with Next.js that enables seamless scheduling between buyers and sellers with Google Calendar integration.
+## ⚠️ Important: Google App Verification Notice
+
+During development and testing, you may encounter a Google verification warning screen when users try to sign in with Google OAuth. This is normal for unverified applications.
+
+![Google Verification Warning](./public/image.png)
+
+**To proceed during development:**
+
+1. When you see the "Google hasn't verified this app" screen
+2. Click on **"Advanced"** at the bottom left
+3. Then click **"Go to [Your App Name] (unsafe)"** to continue
+4. Complete the OAuth flow as normal
+
+**Note:** This warning appears because the app is not yet verified by Google. For production use, you'll need to submit your app for Google's verification process through the Google Cloud Console.
 
 ## Features
 
@@ -122,20 +136,7 @@ npm start
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## ⚠️ Important: Google App Verification Notice
 
-During development and testing, you may encounter a Google verification warning screen when users try to sign in with Google OAuth. This is normal for unverified applications.
-
-![Google Verification Warning](./public/image.png)
-
-**To proceed during development:**
-
-1. When you see the "Google hasn't verified this app" screen
-2. Click on **"Advanced"** at the bottom left
-3. Then click **"Go to [Your App Name] (unsafe)"** to continue
-4. Complete the OAuth flow as normal
-
-**Note:** This warning appears because the app is not yet verified by Google. For production use, you'll need to submit your app for Google's verification process through the Google Cloud Console.
 
 ## Application Flow
 
