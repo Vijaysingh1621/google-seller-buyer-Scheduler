@@ -24,3 +24,51 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Ensure form inputs have proper contrast */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="time"],
+input[type="date"],
+input[type="datetime-local"],
+textarea,
+select {
+  color: #111827 !important; /* gray-900 */
+  background-color: #ffffff !important;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="search"]::placeholder,
+textarea::placeholder {
+  color: #6b7280 !important; /* gray-500 */
+}
+
+/* Ensure proper contrast for disabled inputs */
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: #f3f4f6 !important; /* gray-100 */
+  color: #6b7280 !important; /* gray-500 */
+}
+
+/* Ensure buttons have proper contrast */
+button {
+  color: inherit;
+}
+
+/* Ensure table cells and other content areas have proper contrast */
+.bg-white {
+  color: #111827; /* gray-900 */
+}
+
+.bg-gray-50 {
+  color: #111827; /* gray-900 */
+}
+
+.bg-gray-100 {
+  color: #111827; /* gray-900 */
+}

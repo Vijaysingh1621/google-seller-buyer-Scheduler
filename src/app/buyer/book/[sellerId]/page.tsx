@@ -350,7 +350,7 @@ export default function BookAppointmentPage({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g., Project Discussion, Consultation"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
               </div>
@@ -364,7 +364,7 @@ export default function BookAppointmentPage({
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Add any additional details about the meeting..."
                   rows={3}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-900 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
