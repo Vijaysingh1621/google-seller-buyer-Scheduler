@@ -45,7 +45,7 @@ function SignInContent() {
         <div className="mt-8 space-y-6">
           <div>
             <label className="text-sm font-medium text-gray-700">I am a:</label>
-            <div className="mt-2 space-y-2 text-black">
+            <div className="mt-2 space-y-2 text-gray-900">
               <label className="flex items-center">
                 <input
                   type="radio"

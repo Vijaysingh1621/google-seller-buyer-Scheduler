@@ -102,7 +102,7 @@ export default function SellerDashboard() {
               </span>
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="flex items-center text-gray-600 hover:text-gray-900"
+                className="flex items-center text-white hover:bg-blue-700"
               >
                 <LogOut className="h-4 w-4 mr-1" />
                 Sign Out

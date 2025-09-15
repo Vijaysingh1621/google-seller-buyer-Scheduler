@@ -144,9 +144,7 @@ export default function BuyerDashboard() {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-gray-600">
-                Welcome, {session.user.name}
-              </span>
+              <span className="text-white">Welcome, {session.user.name}</span>
               <Link
                 href="/buyer/appointments"
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center"
@@ -156,7 +154,7 @@ export default function BuyerDashboard() {
               </Link>
               <button
                 onClick={() => signOut()}
-                className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 flex items-center"
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Sign Out
@@ -240,7 +238,7 @@ export default function BuyerDashboard() {
                   {recentAppointments.map((appointment) => (
                     <div
                       key={appointment._id}
-                      className="flex items-center justify-between p-4 border rounded-lg"
+                      className="flex items-center justify-between p-4 border-gray-200 rounded-lg"
                     >
                       <div>
                         <p className="font-medium text-gray-900">
@@ -312,7 +310,7 @@ export default function BuyerDashboard() {
                   {filteredSellers.map((seller) => (
                     <div
                       key={seller._id}
-                      className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50"
+                      className="flex items-center justify-between p-4 border-gray-200 rounded-lg hover:bg-gray-50"
                     >
                       <div className="flex items-center">
                         {seller.image ? (
