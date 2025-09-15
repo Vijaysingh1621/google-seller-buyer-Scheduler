@@ -278,8 +278,6 @@ For issues and questions:
 
 ## License
 
-This project is built for educational purposes as part of an internship assignment.
-
 ---
 
 **Built with ❤️ using Next.js, TypeScript, and Google Calendar API**
